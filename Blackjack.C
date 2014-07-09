@@ -1,6 +1,7 @@
 //
 //	File: Blackjack.C
 //	Date: July 2014
+//	Compiler: g++ (GCC) 4.4.7 20120313 (Red Hat 4.4.7-4)
 //
 //	Programmed by Suhan Ree for Insight Engineering Fellows Code Challenge.
 //
@@ -17,11 +18,11 @@ using std::cout;	// To be used for standard input & output.
 using std::cin;
 using std::endl;
 
-// classes for error exceptiosn.
+// classes for error exceptions.
 struct BadSuit {};
 struct BadNumberDecks {};
 
-// Some constants (as global variables).
+// Some global constants.
 const int PLAYER_CHIP = 100;	// Initial number of player's chips.
 const int DEALER_CHIP = 10000;	// Initial number of dealer's chips.
 const int MAX_BET = 5;		// Maximum number of chips for a bet in a round.
@@ -54,9 +55,8 @@ class Card {
 			return num;
 		}
 		
-		// Get the name of the card (A, 2, 3,..., 10, J, Q, K).
-		std::string getName() const {
-			std::string temp;
+		// Get the rank of the card (A, 2,..., 10, J, Q, K) as strings.
+		std::string getRank() const {
 			if (num == 1) return "A";
 			else if (num == 2) return "2";
 			else if (num == 3) return "3";
@@ -82,13 +82,13 @@ class Card {
 		char suit;	// The suit of the card (c, s, h, d).
 };		
 
-// outstream operator overloading for Card class.
+// outstream operator overloading for the Card class.
 std::ostream & operator<<(std::ostream &s, const Card &c) {
-	return s << c.getName() << "(" << c.getSuit() << ')';
+	return s << c.getRank() << "(" << c.getSuit() << ')';
 }
 
 // Class that represents the decks of cards for the game of blackjack.
-// Number of decks used here are 1, or 2, or 4.		
+// Number of decks allowed here are 1, 2, and 4.		
 class Decks {
 	public:
 		// Constructor. The number of decks should be given (default=1).
@@ -100,10 +100,10 @@ class Decks {
 		void create(int nDeck) {
 			if (nDeck != 1 && nDeck != 2 && nDeck != 4) 
 				throw BadNumberDecks();
-			cards.resize(nDeck*52); 
+			cards.resize(nDeck*52); // size of the array resized. 
 			int index = 0;
 			for (int i = 0; i < nDeck; i++)
-				// Creating and storing cards.
+				// Creating and storing cards for nDeck decks.
 				for (int n = 1; n <= 13; n++) { 
 					cards[index++] = Card(n, 'c');
 					cards[index++] = Card(n, 's');
@@ -112,7 +112,7 @@ class Decks {
 				}
 		}
 		
-		// Randomly shuffle the all cards in the deck (set current=0).
+		// Randomly shuffle all cards in the deck and set current as 0.
 		void shuffle() {
 			// using the standard library.
 			std::random_shuffle(cards.begin(), cards.end()); 
@@ -121,8 +121,11 @@ class Decks {
 		
 		// Deal a card that are pointed by current and add 1 to current.
 		Card deal() {
+			// If all cards are dealt, shuffle cards again.
+			if (current == cards.size()) shuffle();
 			return cards[current++];
 		}
+
 		
 		// Print all cards at the current shuffled state.
 		void print() const {
@@ -146,24 +149,24 @@ class Hand {
 			cardsAtHand.push_back(card);
 		}
 		
-		// Compute the value of the hand.
+		// Compute the value of the hand for the blackjack using S17.
 		// This function will be used to determine whether the dealer
-		// should hit or stand (S17 rule is used), and to find out 
-		// the value of the player's hand after the player decides 
-		// to stand.
+		// should hit or stand (S17 rule is used here), and to find out 
+		// the value of the player's hand, 
+		// for example,  after the player decides to stand.
 		int getValue() const {
 			int value = 0;
 			// true if an ace exists in the hand.
 			bool ifAce = false;  
 			for (int i = 0; i < cardsAtHand.size(); i++) {
 				int cardValue = cardsAtHand[i].getValue();
-				// Give 10 for face cards.
+				// Give 10 for all face cards (J, Q, K).
 				if (cardValue > 10) cardValue = 10; 	
 				if (cardValue == 1) ifAce=true;
 				value += cardValue;
 			}
 			// Ace is always counted as 11 if doing so dose not 
-			// make the hand bust.
+			// make the hand bust (S17 rule for dealer's hand).
 			if (ifAce && value < 12) value += 10;	
 			return value;
 		}
@@ -199,8 +202,11 @@ class Hand {
 		std::vector<Card> cardsAtHand;	// Array of cards in a hand.
 }; 
 
-// Class that represents the game (displaying texts, 
-// 	and managing the flow of the game).
+// Class that represents the game (displaying texts using standard output, 
+// 	and managing the flow of the game using 5 stages).
+// User inputs are obtained also using standard input, and only the first
+// 	character (excluding white spaces) of an input (a line ending with \n)
+// 	is assumed to be the only user input to reduce confusions.
 class Game {
 	public:
 		// Constructor.
@@ -213,21 +219,21 @@ class Game {
 		void play() {
 			// Setting the random seed.
 			std::srand(std::time(NULL)); 
-			// Starting the game.
+			// Starting the game (stage1).
 			char input = beginGame(); // one-character user input.
 			// Keep playing rounds if the player wants.
 			while (input == 'n') {
-				beginRound();
+				beginRound(); // (stage2)
 				do {
-					input = inRound();
+					input = inRound(); // (stage3)
 				} while (input == 'h');
 				// There are three cases for ending a round: 
 				// (1) player busting (input == 'b'), 
 				// (2) player stands (input == 's').
-				// (3) player forces to quit at the moment.
-				input = endRound(input);
+				// (3) player forces to quit while playing.
+				input = endRound(input); // (stage4)
 			}
-			endGame(); 
+			endGame(); // (stage5)
 		}
 
 	private:
@@ -239,9 +245,10 @@ class Game {
 			cout << "#  The Game of Blackjack  #" << endl;
 			cout << "###########################" << endl;
 			cout << endl;
+
 			int nDeck;
 			// Get the input, the number of decks (nDeck).
-			do {
+			do { // (will be repeated until a right input is given).
 				cout << "Choose the number of decks to use ";
 				cout << "[1/2/4] (default: 1):  ";
 				cin.getline(temp, MAX_CHARACTER);
@@ -250,8 +257,9 @@ class Game {
 				// default value is 1 when no input.
 				if (nDeck == 0) nDeck = 1; 
 			} while (nDeck != 1 && nDeck != 2 && nDeck != 4);
-			myDecks.create(nDeck); // Create the decks of cards.
 			cout << endl;
+
+			myDecks.create(nDeck); // Creating the decks of cards.
 			cout << nDeck << " deck" << (nDeck == 1 ? "" : "s");
 			cout << " (" << 52 * nDeck << " cards) ";
 			cout << (nDeck == 1 ? "has" : "have");
@@ -260,8 +268,9 @@ class Game {
 			cout << " chips now, and you can bet";
 			cout << " upto " << MAX_BET;
 			cout << " chips for each round.\n" << endl;
-			char input;
-			do {
+
+			char input; // For user input.
+			do { // (will be repeated until a right input is given).
 				cout << "Type n for a new round, r for rules, ";
 				cout << "and q to quit [n/r/q] (default: n): ";
 				cin.getline(temp, MAX_CHARACTER);
@@ -280,14 +289,18 @@ class Game {
 			cout << "===================================" << endl;
 			cout << "* Starting a New Round (your chips: ";
 			cout << nPlayerChip << ").\n" << endl;
-			// Used when checking if (remaining chips) < nBet.
+
 			bool insufficient = false; 
-			do {
-				if (insufficient) cout << "You only have ";
-				cout << nPlayerChip << " chip(s)." << endl; 
+				// Used when checking (remaining chips) < nBet.
+			do { // (will be repeated until a right input is given).
+				if (insufficient) {
+					cout << "You only have " << nPlayerChip;
+					cout << " chip(s)." << endl; 
+				};
 				cout << "How many chips do you want to bet? ";
 				cout << "[1-5] (default: 1): ";
-				insufficient = false;
+				insufficient = false; // Set it for a new input.
+
 				// Read a line and store in temp.
 				cin.getline(temp, MAX_CHARACTER); 
 				// extract a number from the first char.
@@ -312,13 +325,13 @@ class Game {
 		}
 
 		// Middle of a round (stage 3).
-		// Returns a character (h, s, b, j).
+		// Returns a character (h, s, b, j, q).
 		// (h: hit, s: stand, b: busted, j: blackjack, q: quit).
 		char inRound() {
 			int playerValue = playerHand.getValue();
 			// Check for the blackjack.
 			// Then stop the round automatically, and return 'j'
-			if (playerHand.size() == 2 && playerValue == 21) {
+			if (playerHand.blackjack()) {
 				cout << "You got the blackjack!" << endl;
 				return 'j'; 
 			};
@@ -330,8 +343,8 @@ class Game {
 			// Show hands (with dealer's first card hidden).
 			showHands(true);	
 
-			char input; // char for the user input in this stage.
-			do {
+			char input; // user input in this stage.
+			do { // (will be repeated until a right input is given).
 				cout << "Type h for Hit, s for Stand, r for ";
 				cout << "rules, q to quit [h/s/r/q] ";
 				cout << "(default: h): ";
@@ -357,24 +370,24 @@ class Game {
 				playerHand.print();
 				cout << "You got busted, and lost ";
 				cout << nBet << " chips." << endl;
-				nPlayerChip -= nBet;
+				takeChips(-nBet);
 			}
 			else if (in == 'q') { // if the player quits the game.
 				cout << "\nYou lost " << nBet << " chips.";
 				cout << endl;
-				nPlayerChip -= nBet;
+				takeChips(-nBet);
 				return in;
 			}
 			else if (in == 'j') { // if player gets the blackjack.
 				showHands(); // Show cards.
-				if (dealerHand.getValue() < 21) {
-					cout << "You won, and gained ";
-					cout << nBet << " chips." << endl;
-					nPlayerChip += nBet;
-				}
-				else {
+				if (dealerHand.blackjack()) {
 					cout << "It is tied, and the bet is ";
 					cout << "returned." << endl;
+				}
+				else {
+					cout << "You won, and gained ";
+					cout << nBet << " chips." << endl;
+					takeChips(nBet);
 				};
 			}
 			else { // if the player stands. We need to look at the 
@@ -390,31 +403,34 @@ class Game {
 					cout << "Dealer got busted, and you ";
 					cout << "gained " << nBet;
 					cout << " chips." << endl;
-					nPlayerChip += nBet;
+					takeChips(nBet);
 				}
 				// Dealer wins.
 				else if (dealerValue > playerValue) {
+					if (dealerHand.blackjack()) {
+						cout << "Dealer got the ";
+						cout << "blackjack!\n";
+					}
 					cout << "Dealer won, and you lost ";
 					cout << nBet << " chips." << endl;
-					nPlayerChip -= nBet;
+					takeChips(-nBet);
 				} 
 				// Player wins.
 				else if (dealerValue < playerValue) {
 					cout << "You won, and you gained ";
 					cout << nBet << " chips." << endl;
-					nPlayerChip += nBet;
+					takeChips(nBet);
 				}
 				// A tie.
 				else { 
 					// If the dealer has the blackjack and
 					// the score is tied, the dealer wins.
-					if (dealerValue == 21 && \
-						dealerHand.size() == 2) {
+					if (dealerHand.blackjack()) {
 						cout << "Dealer got the ";
 						cout << "blackjack! ";
 						cout << "You lost " << nBet;
 						cout << " chips." << endl;
-						nPlayerChip -= nBet;
+						takeChips(-nBet);
 					}
 					// the score is tied, and the dealer
 					// doesn't have blackjack.
@@ -429,11 +445,12 @@ class Game {
 			cout << "\n* End of the Round (your chips: ";
 			cout << nPlayerChip << ")." << endl;
 			cout << "===================================" << endl;
-			//
+		
 			// If all chips are used up, the game ends.
-			if (nPlayerChip == 0) return 'q'; 
+			if (nPlayerChip == 0 || nDealerChip == 0) return 'q'; 
+
 			char input; // character for the user input.
-			do {
+			do { // (will be repeated until a right input is given).
 				cout << "\nType n for a new round, r for rules";
 				cout << ", q to quit [n/r/q] (default: n): ";
 				cin.getline(temp, MAX_CHARACTER);
@@ -550,6 +567,14 @@ class Game {
 			cout << "Then, for example, A(s) stands for the spade ";
 			cout << "ace, 10(d) stands for the diamond 10, ";
 			cout << "and Q(h) stands for the heart queen." << endl;
+			cout << "\n# Player inputs." << endl;
+			cout << "The player can give inputs using keyboards ";
+			cout << "at the prompt, and only the first characters ";
+			cout << "(excluding white spaces) will be regarded ";
+			cout << "as valid inputs.\n";
+			cout << "All possible inputs are: n (new round), ";
+			cout << "r (rules), h (hit), s (stand), q (quit), ";
+			cout << "and 1~5 (size of the bet, number of decks).\n";
 			cout << "===================================" << endl;
 			cout << endl;
 		}
@@ -578,11 +603,18 @@ class Game {
 			cout << endl;
 		}
 
+		// Chips changing hands.
+		// (amount > 0: dealer to player; < 0, otherwise).
+		void takeChips(int amount) {
+			nPlayerChip += amount;
+			nDealerChip -= amount;
+		}
+
 	private:
 		Decks myDecks;	// All cards for the game.
 		Hand playerHand, dealerHand; // Hands for the game.
 		int nPlayerChip, nDealerChip; // Numbers of chips for players.
-		int nBet; 	// bet of the current round (temporary storage).
+		int nBet; 	// Bet of the current round.
 
 		char temp[MAX_CHARACTER+1]; // C-string for temporary storages.
 };
