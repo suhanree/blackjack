@@ -100,17 +100,17 @@ represented during the game.
 
 This class represents a card with a number (rank) and a suit.
 
-*`Card(int num , char suit)` : constructor (`num` value of the card,
+`Card(int num , char suit)` : constructor (`num` value of the card,
 1\~13;  `suit` suit of the card, ‘c’, ‘s’, ‘h’, and ‘d’, representing
 club, spade, heart, and diamond, respectively).
 
-*`int getValue()` : returns the value of the card (return values:
+`int getValue()` : returns the value of the card (return values:
 1\~13).
 
-*`string getRank()` : returns the rank of the card (return values: A,
+`string getRank()` : returns the rank of the card (return values: A,
 2, 3, …, 9, 10, J, Q, K, as string objects).  
 
-*`char getSuit()` : returns the suit of the card (return values: ‘c’,
+`char getSuit()` : returns the suit of the card (return values: ‘c’,
 ‘s’, ‘h’, and ‘d’, as characters).
 
 
@@ -120,18 +120,18 @@ This class represents cards of decks to be played in the game of
 blackjacks. The player can choose the number of decks to be used in the
 game (only 1 or 2 or 4 is allowed here).
 
-*`Decks(int nDeck)` : constructor (`nDeck` number of decks to be
+`Decks(int nDeck)` : constructor (`nDeck` number of decks to be
 used, 1 or 2 or 4).
 
-*`void create(int nDeck)` : create the cards using `nDeck` decks.
+`void create(int nDeck)` : create the cards using `nDeck` decks.
 
-*`void shuffle()` : shuffle all cards and set the current card as the
+`void shuffle()` : shuffle all cards and set the current card as the
 first card.
 
-*`Card deal()` : returns a Card object pointed currently, and set the
+`Card deal()` : returns a Card object pointed currently, and set the
 pointer to the next card.
 
-*`void print()` : writes all cards of given decks in the currently
+`void print()` : writes all cards of given decks in the currently
 shuffled state on the screen.
 
 
@@ -140,22 +140,22 @@ shuffled state on the screen.
 This class represents a hand (currently held cards) of a player or a
 dealer.
 
-*`Hand()` : constructor, creates a hand with no card.
+`Hand()` : constructor, creates a hand with no card.
 
-*`void addCard(Card card)` : add a card given as an argument to the
+`void addCard(Card card)` : add a card given as an argument to the
 hand.
 
-*`int getValue()` : returns the current value of a hand (summed over
+`int getValue()` : returns the current value of a hand (summed over
 card values of a hand).
 
-*`int size()` : returns the number of cards in the hand.
+`int size()` : returns the number of cards in the hand.
 
-*`bool blackjack()` : returns true if the hand is the blackjack
+`bool blackjack()` : returns true if the hand is the blackjack
 (getting 21 with two cards); false if not.
 
-*`void removeAllCards()` : removes all cards in the hand.
+`void removeAllCards()` : removes all cards in the hand.
 
-*`void print(bool hideFirst)` : writes all cards of the hand on the
+`void print(bool hideFirst)` : writes all cards of the hand on the
 screen (if `hideFirst` is true, the first card of the hand is hidden;
 shown if false). 
 
@@ -164,10 +164,10 @@ shown if false). 
 
 This class manages the game.
 
-*`Game()` : constructor, creates cards and two hands for a player and a
+`Game()` : constructor, creates cards and two hands for a player and a
 dealer.
 
-*`void play()` : plays the game (managing flows of the game, and
+`void play()` : plays the game (managing flows of the game, and
 letting other functions interact with the player).
 
   
@@ -182,7 +182,7 @@ using standard I/O (text-based IO) for respective stages. They write
 information and current states of the game on the screen, and also ask
 inputs from the player during the game.
 
-**Stage1: Begin the game** [`char beginGame()`]
+**Stage1: Begin the game**, `char beginGame()`
 
 Output: 
 
@@ -203,7 +203,7 @@ Input: 
 
   
 
-**Stage2: Begin a round** [`void beginRound()`]
+**Stage2: Begin a round**, `void beginRound()`
 
 Output:
 
@@ -217,7 +217,7 @@ Input:
 
   
 
-**Stage3: In a round** [`char inRound()`]
+**Stage3: In a round**, `char inRound()`
 
 Output:
 
@@ -234,7 +234,7 @@ quit).
 
   
 
-**Stage4: End a round** [`void endRound(char input)`]
+**Stage4: End a round**, `void endRound(char input)`
 
 Output:
 
@@ -252,7 +252,7 @@ Input: 
 
   
 
-**Stage5: End the game** [`void endgame()`]
+**Stage5: End the game**, `void endgame()`
 
 Output:
 
