@@ -1,8 +1,8 @@
-**Game of Blackjack**
+###Game of Blackjack
 
-By Suhan Ree
+			By Suhan Ree
 
-​1. Introduction
+##1. Introduction
 
 In this document, I describe the rules of the blackjack, chosen for this
 coding challenge, and show briefly how the code was implemented. 
@@ -27,9 +27,7 @@ player or a dealer at a given moment. The Game class manages the flow of
 the game, while dealing with text-based user interactions using 5
 stages.
 
-\
-
-​2. Rules of the game
+##2. Rules of the game
 
 There are two players: a dealer, played by a computer, and a player,
 played by a user. The game can be played as many rounds as the player
@@ -43,8 +41,6 @@ chips here. The dealer is assumed to have 10,000 chips in the beginning.
 If either the player or the dealer loses all chips, the game ends
 automatically.
 
-\
-
 At each round, the objective of the player is to win the bet by creating
 a card total that is higher than the value of the dealer's hand, but not
 exceeding 21 (called, "busting"). The value of a hand is determined by
@@ -53,24 +49,18 @@ as the face values, while J, Q, and K (face cards) are counted as 10 and
 an ace, A, can be counted as either 1 or 11. The suits of the cards
 don't have any meaning.
 
-\
-
 Once the amount of the bet is chosen for each round, two cards are dealt
 at the beginning of the round: both cards of the player are revealed,
 while only one card is revealed for the dealer. The player has two
 options: Hit or Stand.
 
-\
-
-Hit: Take another card from the dealer. If the player's hand is not
+1. Hit: Take another card from the dealer. If the player's hand is not
 busted by exceeding 21, the player has another chance to choose to hit
 or stand, 
 
-Stand: Take no more card. Then, the player's value is determined by
+2. Stand: Take no more card. Then, the player's value is determined by
 summing over all cards in the hand (A can be either 1 or 11, whichever
 is better).
-
-\
 
 If the player gets busted by exceeding 21, the dealer wins. If the
 player choose to stand at a value 21 or lower, the dealer should hit
@@ -81,8 +71,6 @@ are not busted, the winner is determined by comparing values; the player
 wins if the player's value is greater, and the dealer wins if the
 dealer's value is greater. If tied, the bet is returned to the player.
 
-\
-
 If the first two cards has the value 21 by having an ace and a 10-valued
 card (10 or J or Q or K), it's called the "Blackjack" and wins every
 hand except another blackjack (it’s a tie if both get the blackjack).
@@ -90,11 +78,7 @@ The value of an ace can be either 1 or 11, and it is not hard to
 determine which value to use: we choose 11 as long as the resulting sum
 doesn't exceed 21.
 
-\
-
-\
-
-​3. Implementation
+##3. Implementation
 
 The language of choice is C++, which I am most familiar with, for this
 challenge (only using features supported by C++03). First, I describe
@@ -103,9 +87,9 @@ game is managed; third, I show how to run the code and how to play the
 game using this program briefly; and lastly, I describe how each card is
 represented during the game.
 
-3.1. Classes
+#3.1. Classes
 
-Card class
+*Card class*
 
 This class represents a card with a number (rank) and a suit.
 
@@ -122,9 +106,8 @@ club, spade, heart, and diamond, respectively).
 **char getSuit()** : returns the suit of the card (return values: ‘c’,
 ‘s’, ‘h’, and ‘d’, as characters).
 
-\
 
-Decks class
+*Decks class*
 
 This class represents cards of decks to be played in the game of
 blackjacks. The player can choose the number of decks to be used in the
@@ -144,9 +127,8 @@ pointer to the next card.
 **void print()** : writes all cards of given decks in the currently
 shuffled state on the screen.
 
-\
 
-Hand class
+*Hand class*
 
 This class represents a hand (currently held cards) of a player or a
 dealer.
@@ -170,9 +152,8 @@ card values of a hand).
 screen (if **hideFirst** is true, the first card of the hand is hidden;
 shown if false). 
 
-\
 
-Game class
+*Game class*
 
 This class manages the game.
 
@@ -182,9 +163,8 @@ dealer.
 **void play()** : plays the game (managing flows of the game, and
 letting other functions interact with the player).
 
-\
 
-3.2. Flow of the game: 5 stages
+#3.2. Flow of the game: 5 stages
 
 To manage the flow of the game, I split the game into 5 stages, and
 implemented 5 private member functions in the Game class, each
@@ -193,87 +173,82 @@ using standard I/O (text-based IO) for respective stages. They write
 information and current states of the game on the screen, and also ask
 inputs from the player during the game.
 
-Stage1: Begin the game [**char beginGame()**]
+*Stage1: Begin the game* [**char beginGame()**]
 
 Output: 
 
-a banner for the game, 
+- a banner for the game, 
 
-a question of how many decks to be used, 
+- a question of how many decks to be used, 
 
-beginning total chips for the player, 
+- beginning total chips for the player, 
 
-a question of next step: whether to start a new round, or to show the
+- a question of next step: whether to start a new round, or to show the
 rules, or to quit.
 
 Input: 
 
-how many decks to be used (1/2/4; default: 1), 
+- how many decks to be used (1/2/4; default: 1), 
 
-next step (n/r/q; default: n) (n: new round, r: show rules, q: quit).
+- next step (n/r/q; default: n) (n: new round, r: show rules, q: quit).
 
-\
 
-Stage2: Begin a round [**void beginRound()**]
+*Stage2: Begin a round* [**void beginRound()**]
 
 Output:
 
-showing the remaining chips of the player,
+- showing the remaining chips of the player,
 
-a question of how many chips to bet, and how many chips are bet.
+- a question of how many chips to bet, and how many chips are bet.
 
 Input:
 
-a number of chips to bet (1\~5; default: 1).
+- a number of chips to bet (1\~5; default: 1).
 
-\
 
-Stage3: In a round [**char inRound()**]
+*Stage3: In a round* [**char inRound()**]
 
 Output:
 
-showing the current hands of both players (with the first card of the
+- showing the current hands of both players (with the first card of the
 dealer hidden),
 
-a question of next step: whether to hit, or to stand, or to show the
+- a question of next step: whether to hit, or to stand, or to show the
 rules, or to quit.
 
 Input:
 
-next step (h/s/r/q; default: h) (h: hit, s: stand, r: show rules, q:
+- next step (h/s/r/q; default: h) (h: hit, s: stand, r: show rules, q:
 quit).
 
-\
 
-Stage4: End a round [**void endRound(char input)**]
+*Stage4: End a round* [**void endRound(char input)**]
 
 Output:
 
-showing results of the round, and how many chips are gained or lost by
+- showing results of the round, and how many chips are gained or lost by
 the player,
 
-showing the remaining chips of the player,
+- showing the remaining chips of the player,
 
-a question of next step: whether to start a new round, or to show the
+- a question of next step: whether to start a new round, or to show the
 rules, or to quit.
 
 Input: 
 
-next step (n/r/q; default: n) (n: new round, r: show rules, q: quit).
+- next step (n/r/q; default: n) (n: new round, r: show rules, q: quit).
 
-\
 
-Stage5: End the game [**void endgame()**]
+*Stage5: End the game* [**void endgame()**]
 
 Output:
 
-showing the remaining chips of the player, with the ending banner.
+- showing the remaining chips of the player, with the ending banner.
 
 Input: none.
 
-\
 
-3.3. How to run & How to play
+#3.3. How to run & How to play
 
 To make the code easy to evaluate, I put every code into one file,
 called *Blackjack.C* (\~600 lines). I used the gcc compiler (g++,
@@ -307,9 +282,8 @@ All possible user inputs during the game are: ‘n’ (new round), ‘r’
 player types only ‘Enter’ for an input, the default value shown in the
 screen will be used in all cases.
 
-\
 
-3.4. Card representation in game
+#3.4. Card representation in game
 
 The ranks: A (ace), 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K.
 
@@ -318,11 +292,8 @@ The suits: c (club), s (spade), h (heart), d (diamond).
 For example, “A(s)” stands for the spade ace, “10(d)” stands for the
 diamond 10, and “Q(h)” stands for the heart queen.
 
-\
 
-\
-
-​4. Summary
+##4. Summary
 
 The logic of the game is not complicated, but the main point of this
 coding challenge seems to be how we effectively establish the user
