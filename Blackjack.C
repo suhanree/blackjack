@@ -483,7 +483,7 @@ class Game {
 			cout << endl;
 			cout << "===================================" << endl;
 			cout << "# How to play the game of Blackjack. " << endl;
-			cout << "\tThere are two players: a dealer, ";
+			cout << "\n\tThere are two players: a dealer, ";
 			cout << "played by a computer, ";
 			cout << "and a player, played by you. ";
 			cout << "The game will be played as many ";
@@ -503,7 +503,7 @@ class Game {
 			cout << " chips here. The dealer is assumed to have ";
 			cout << DEALER_CHIP << " chips in the beginning. ";
 			cout << "If either the player or the dealer loses all ";
-			cout << "chips, the game ends.\n";
+			cout << "chips, the game ends.\n\n";
 			cout << "\tAt each round, the objective of the player ";
 			cout << "is to win the bet by creating a card total ";
 			cout << "that is higher than the value of ";
@@ -516,7 +516,7 @@ class Game {
 			cout << "while J, Q, and K (face cards) are counted ";
 			cout << "as 10 and an ace, A, ";
 			cout << "can be counted as 1 or 11. The suits of the ";
-			cout << "cards don't have any meaning.\n";
+			cout << "cards don't have any meaning.\n\n";
 			cout << "\tOnce the amount of the bet is chosen for ";
 			cout << "each round, ";
 			cout << "two cards are dealt at the beginning of the ";
@@ -524,16 +524,16 @@ class Game {
 			cout << " while only one card is revealed for the ";
 			cout << "dealer. ";
 			cout << "The player has two options: Hit or Stand.\n";
-			cout << "(1) Hit: Take another card from the dealer. ";
-			cout << "If the player's hand ";
+			cout << "\n(1) Hit: Take another card from the dealer.";
+			cout << " If the player's hand ";
 			cout << "is not busted by exceeding 21, ";
 			cout << "the player has another chance ";
-			cout << "to choose to hit or stand,\n";
+			cout << "to choose to hit or stand,\n\n";
 			cout << "(2) Stand: Take no more card. ";
 			cout << "Then, the player's value is ";
 			cout << "determined by summing over all cards in ";
 			cout << "the hand (An ace, A, can be either 1 or 11, ";
-			cout << "whichever is better).\n";
+			cout << "whichever is better).\n\n";
 			cout << "\tIf the player gets busted by exceeding 21, ";
 			cout << "the dealer wins. If the player choose to ";
 			cout << "stand at a value 21 or lower, ";
@@ -549,31 +549,27 @@ class Game {
 			cout << "if the player's value is greater, and the ";
 			cout << "dealer wins if the dealer's value is greater.";
 			cout << " If tied, the bet is returned to the player.";
-			cout << "\n\tIf the first two cards has the value 21 ";
-			cout << "by having an ace and ";
+			cout << "\n\n\tIf the first two cards has the value ";
+			cout << "21 by having an ace and ";
 			cout << "a 10-valued card (10 or J or Q or K), ";
-			cout << "it's called the \"Blackjack\" ";
-			cout << "and wins every hand except another blackjack.";
-			cout << " The value of an ace ";
-			cout << "can be either 1 or 11, and it is not hard ";
-			cout << "to determine which value to use: we choose ";
-			cout << "11 as long as the resulting sum doesn't ";
-			cout << "exceed 21.\n" << endl;
-			cout << "# Card representation." << endl;
+			cout << "it's called the \"Blackjack\" and ";
+			cout << "wins every hand except another blackjack (if ";
+			cout << "both get blackjacks, it's a tie).\n\n\n";
+			cout << "# Card representation.\n\n";
 			cout << "The ranks: A (ace), 2, 3, 4, 5, 6, 7, 8, 9, ";
 			cout << "10, J, Q, K.\n";
 			cout << "The suits: c (club), s (spade), h (heart), ";
-			cout << "d (diamond).\n";
+			cout << "d (diamond).\n\n";
 			cout << "Then, for example, A(s) stands for the spade ";
 			cout << "ace, 10(d) stands for the diamond 10, ";
-			cout << "and Q(h) stands for the heart queen." << endl;
-			cout << "\n# Player inputs." << endl;
-			cout << "The player can give inputs using keyboards ";
-			cout << "at the prompt, and only the first characters ";
-			cout << "(excluding white spaces) will be regarded ";
-			cout << "as valid inputs.\n";
-			cout << "All possible inputs are: n (new round), ";
-			cout << "r (rules), h (hit), s (stand), q (quit), ";
+			cout << "and Q(h) stands for the heart queen.\n\n\n";
+			cout << "# Player inputs.\n\n";
+			cout << "\tThe player can give inputs using keyboards ";
+			cout << "at the prompt, and only the first character ";
+			cout << "(excluding white spaces) of a line, followed ";
+			cout << "by Enter, will be regarded as a valid input. ";
+			cout << "Possible input characters are: n (new round),";
+			cout << " r (rules), h (hit), s (stand), q (quit), ";
 			cout << "and 1~5 (size of the bet, number of decks).\n";
 			cout << "===================================" << endl;
 			cout << endl;
@@ -604,7 +600,7 @@ class Game {
 		}
 
 		// Chips changing hands.
-		// (amount > 0: dealer to player; < 0, otherwise).
+		// (amount > 0: dealer to player; < 0, player to dealer).
 		void takeChips(int amount) {
 			nPlayerChip += amount;
 			nDealerChip -= amount;
