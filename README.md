@@ -1,7 +1,9 @@
-###Game of Blackjack
+#Game of Blackjack
 
-			By Suhan Ree
+By Suhan Ree
 
+  
+  
 ##1. Introduction
 
 In this document, I describe the rules of the blackjack, chosen for this
@@ -26,7 +28,9 @@ cards used in the game, and a Hand object is for cards in a hand of a
 player or a dealer at a given moment. The Game class manages the flow of
 the game, while dealing with text-based user interactions using 5
 stages.
-
+  
+  
+  
 ##2. Rules of the game
 
 There are two players: a dealer, played by a computer, and a player,
@@ -78,6 +82,9 @@ The value of an ace can be either 1 or 11, and it is not hard to
 determine which value to use: we choose 11 as long as the resulting sum
 doesn't exceed 21.
 
+  
+  
+  
 ##3. Implementation
 
 The language of choice is C++, which I am most familiar with, for this
@@ -87,84 +94,86 @@ game is managed; third, I show how to run the code and how to play the
 game using this program briefly; and lastly, I describe how each card is
 represented during the game.
 
-#3.1. Classes
+###3.1. Classes
 
-*Card class*
+**Card class**
 
 This class represents a card with a number (rank) and a suit.
 
-**Card(int num , char suit)** : constructor (**num**: value of the card,
-1\~13;  **suit**: suit of the card, ‘c’, ‘s’, ‘h’, and ‘d’, representing
+*`Card(int num , char suit)` : constructor (`num` value of the card,
+1\~13;  `suit` suit of the card, ‘c’, ‘s’, ‘h’, and ‘d’, representing
 club, spade, heart, and diamond, respectively).
 
-**int getValue()** : returns the value of the card (return values:
+*`int getValue()` : returns the value of the card (return values:
 1\~13).
 
-**string getRank()** : returns the rank of the card (return values: A,
+*`string getRank()` : returns the rank of the card (return values: A,
 2, 3, …, 9, 10, J, Q, K, as string objects).  
 
-**char getSuit()** : returns the suit of the card (return values: ‘c’,
+*`char getSuit()` : returns the suit of the card (return values: ‘c’,
 ‘s’, ‘h’, and ‘d’, as characters).
 
 
-*Decks class*
+**Decks class**
 
 This class represents cards of decks to be played in the game of
 blackjacks. The player can choose the number of decks to be used in the
 game (only 1 or 2 or 4 is allowed here).
 
-**Decks(int nDeck)** : constructor (**nDeck**: number of decks to be
+*`Decks(int nDeck)` : constructor (`nDeck` number of decks to be
 used, 1 or 2 or 4).
 
-**void create(int nDeck)** : create the cards using **nDeck** decks.
+*`void create(int nDeck)` : create the cards using `nDeck` decks.
 
-**void shuffle()** : shuffle all cards and set the current card as the
+*`void shuffle()` : shuffle all cards and set the current card as the
 first card.
 
-**Card deal()** : returns a Card object pointed currently, and set the
+*`Card deal()` : returns a Card object pointed currently, and set the
 pointer to the next card.
 
-**void print()** : writes all cards of given decks in the currently
+*`void print()` : writes all cards of given decks in the currently
 shuffled state on the screen.
 
 
-*Hand class*
+**Hand class**
 
 This class represents a hand (currently held cards) of a player or a
 dealer.
 
-**Hand()** : constructor, creates a hand with no card.
+*`Hand()` : constructor, creates a hand with no card.
 
-**void addCard(Card card)** : add a card given as an argument to the
+*`void addCard(Card card)` : add a card given as an argument to the
 hand.
 
-**int getValue()** : returns the current value of a hand (summed over
+*`int getValue()` : returns the current value of a hand (summed over
 card values of a hand).
 
-**int size()** : returns the number of cards in the hand.
+*`int size()` : returns the number of cards in the hand.
 
-**bool blackjack()** : returns true if the hand is the blackjack
+*`bool blackjack()` : returns true if the hand is the blackjack
 (getting 21 with two cards); false if not.
 
-**void removeAllCards()** : removes all cards in the hand.
+*`void removeAllCards()` : removes all cards in the hand.
 
-**void print(bool hideFirst)** : writes all cards of the hand on the
-screen (if **hideFirst** is true, the first card of the hand is hidden;
+*`void print(bool hideFirst)` : writes all cards of the hand on the
+screen (if `hideFirst` is true, the first card of the hand is hidden;
 shown if false). 
 
 
-*Game class*
+**Game class**
 
 This class manages the game.
 
-**Game()** : constructor, creates cards and two hands for a player and a
+*`Game()` : constructor, creates cards and two hands for a player and a
 dealer.
 
-**void play()** : plays the game (managing flows of the game, and
+*`void play()` : plays the game (managing flows of the game, and
 letting other functions interact with the player).
 
+  
+  
 
-#3.2. Flow of the game: 5 stages
+###3.2. Flow of the game: 5 stages
 
 To manage the flow of the game, I split the game into 5 stages, and
 implemented 5 private member functions in the Game class, each
@@ -173,7 +182,7 @@ using standard I/O (text-based IO) for respective stages. They write
 information and current states of the game on the screen, and also ask
 inputs from the player during the game.
 
-*Stage1: Begin the game* [**char beginGame()**]
+**Stage1: Begin the game** [`char beginGame()`]
 
 Output: 
 
@@ -192,8 +201,9 @@ Input: 
 
 - next step (n/r/q; default: n) (n: new round, r: show rules, q: quit).
 
+  
 
-*Stage2: Begin a round* [**void beginRound()**]
+**Stage2: Begin a round** [`void beginRound()`]
 
 Output:
 
@@ -205,8 +215,9 @@ Input:
 
 - a number of chips to bet (1\~5; default: 1).
 
+  
 
-*Stage3: In a round* [**char inRound()**]
+**Stage3: In a round** [`char inRound()`]
 
 Output:
 
@@ -221,8 +232,9 @@ Input:
 - next step (h/s/r/q; default: h) (h: hit, s: stand, r: show rules, q:
 quit).
 
+  
 
-*Stage4: End a round* [**void endRound(char input)**]
+**Stage4: End a round** [`void endRound(char input)`]
 
 Output:
 
@@ -238,8 +250,9 @@ Input: 
 
 - next step (n/r/q; default: n) (n: new round, r: show rules, q: quit).
 
+  
 
-*Stage5: End the game* [**void endgame()**]
+**Stage5: End the game** [`void endgame()`]
 
 Output:
 
@@ -247,8 +260,10 @@ Output:
 
 Input: none.
 
+  
+  
 
-#3.3. How to run & How to play
+###3.3. How to run & How to play
 
 To make the code easy to evaluate, I put every code into one file,
 called *Blackjack.C* (\~600 lines). I used the gcc compiler (g++,
@@ -282,8 +297,10 @@ All possible user inputs during the game are: ‘n’ (new round), ‘r’
 player types only ‘Enter’ for an input, the default value shown in the
 screen will be used in all cases.
 
+  
+  
 
-#3.4. Card representation in game
+###3.4. Card representation in game
 
 The ranks: A (ace), 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K.
 
@@ -292,6 +309,9 @@ The suits: c (club), s (spade), h (heart), d (diamond).
 For example, “A(s)” stands for the spade ace, “10(d)” stands for the
 diamond 10, and “Q(h)” stands for the heart queen.
 
+  
+  
+  
 
 ##4. Summary
 
